@@ -20,6 +20,7 @@ const reportSchema = new mongoose.Schema(
   }
 );
 
+
 const Report = mongoose.model("reports", reportSchema);
 
 module.exports = Report;
