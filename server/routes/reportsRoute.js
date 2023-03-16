@@ -9,6 +9,7 @@ const router = require("express").Router();
 router.post("/add-report", authMiddleware, async (req, res) => {
   try {
     const newReport = new Report(req.body);
+    console.log(newReport);
     await newReport.save();
     res.send({
       message: "Attempt added successfully",
@@ -36,26 +37,31 @@ router.post("/get-all-reports", authMiddleware, async (req, res) => {
     });
 
     const matchedExamIds = exams.map((exam) => exam._id);
+    console.log("c", matchedExamIds)
 
     const users = await User.find({
       name: {
         $regex: userName,
       },
     });
+    // console.log("a", users);
 
     const matchedUserIds = users.map((user) => user._id);
+    // console.log("b", matchedUserIds);
 
     const reports = await Report.find({
       exam: {
         $in: matchedExamIds,
       },
-      // user: {
-      //   $in: matchedUserIds,
-      // },
+      user: {
+        $in: matchedUserIds,
+      },
     })
+
       .populate("exam")
       .populate("user")
       .sort({ createdAt: -1 });
+    console.log("d", reports);
     res.send({
       message: "Attempts fetched successfully",
       data: reports,
@@ -73,7 +79,7 @@ router.post("/get-all-reports", authMiddleware, async (req, res) => {
 // get all reports by user
 router.post("/get-all-reports-by-user", authMiddleware, async (req, res) => {
   try {
-    const reports = await Report.find({ user: req.body.Id })
+    const reports = await Report.find({ user: req.body.userId })
       .populate("exam")
       .populate("user")
       .sort({ createdAt: -1 });
