@@ -41,15 +41,15 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-  // check if user exists
-  const user = await User.findOne({ email: req.body.email });
-  if (!user) {
-    return res
-      .status(200)
-      .send({ message: "User does not exist", success: false });
-  }
+    // check if user exists
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res
+        .status(200)
+        .send({ message: "User does not exist", success: false });
+    }
 
-  // check password
+    // check password
     const validPassword = await bcrypt.compare(
       req.body.password,
       user.password
@@ -101,7 +101,7 @@ router.post("/get-user-info", authMiddleware, async (req, res) => {
 
 router.get("/get-all-user-info", authMiddleware, async (req, res) => {
   try {
-    const user = await User.find({isAdmin : false});
+    const user = await User.find({ isAdmin: false });
     // console.log(user);
     res.send({
       message: "User info fetched successfully",
@@ -120,12 +120,11 @@ router.get("/get-all-user-info", authMiddleware, async (req, res) => {
 // delete user by id
 router.post("/delete-user-by-id", authMiddleware, async (req, res) => {
   try {
-    await User.findByIdAndDelete();
-    // console.log(deleteUser)
+    const userDelete = await User.deleteOne({ name: req.body.userName });
+
     res.send({
       message: "User deleted successfully",
       success: true,
-     
     });
   } catch (error) {
     res.status(500).send({
@@ -135,7 +134,5 @@ router.post("/delete-user-by-id", authMiddleware, async (req, res) => {
     });
   }
 });
-
-
 
 module.exports = router;
