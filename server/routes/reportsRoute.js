@@ -9,7 +9,7 @@ const router = require("express").Router();
 router.post("/add-report", authMiddleware, async (req, res) => {
   try {
     const newReport = new Report(req.body);
-    console.log(newReport);
+    // console.log(newReport);
     await newReport.save();
     res.send({
       message: "Attempt added successfully",
@@ -37,7 +37,7 @@ router.post("/get-all-reports", authMiddleware, async (req, res) => {
     });
 
     const matchedExamIds = exams.map((exam) => exam._id);
-    console.log("c", matchedExamIds)
+    // console.log("c", matchedExamIds)
 
     const users = await User.find({
       name: {
@@ -61,7 +61,7 @@ router.post("/get-all-reports", authMiddleware, async (req, res) => {
       .populate("exam")
       .populate("user")
       .sort({ createdAt: -1 });
-    console.log("d", reports);
+    // console.log("d", reports);
     res.send({
       message: "Attempts fetched successfully",
       data: reports,

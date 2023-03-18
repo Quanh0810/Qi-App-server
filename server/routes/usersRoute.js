@@ -120,10 +120,12 @@ router.get("/get-all-user-info", authMiddleware, async (req, res) => {
 // delete user by id
 router.post("/delete-user-by-id", authMiddleware, async (req, res) => {
   try {
-    await User.findByIdAndDelete(req.body.userId);
+    await User.findByIdAndDelete();
+    // console.log(deleteUser)
     res.send({
       message: "User deleted successfully",
       success: true,
+     
     });
   } catch (error) {
     res.status(500).send({
